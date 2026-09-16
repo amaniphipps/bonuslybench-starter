@@ -39,6 +39,10 @@ That's it. Responses land in `<run_dir>/responses`, usage telemetry in `<run_dir
 error journals in `<run_dir>/results/*.err.json`, and per-test scores in
 `<run_dir>/results/*.score.json`.
 
+**Validated**: smoke-tested end-to-end with `z-ai/glm-5.3-flash` on 2026-09-16 — the
+scorer correctly caught a real arithmetic slip the model made (total/median wrong).
+Cost per sample call ≈ $0.00025.
+
 ## Bring your own tests
 
 Tests live in `tests/tests.json`. Each entry:
