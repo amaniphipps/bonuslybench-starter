@@ -41,19 +41,19 @@ def score(test_id, out, truth=None, allowed=None):
 
     if test_id == 'sample-arithmetic':
         return _res([
-            C('total_12_54321', has_num(N, 54321, 1)),
-            C('average_5432_1', has_num(N, 5432.1, 1)),
+            C('total_29656', has_num(N, 29656, 1)),
+            C('average_2965_6', has_num(N, 2965.6, 0.5)),
             C('count_10', has_num(N, 10, 0)),
-            C('min_123', has_num(N, 123, 1)),
+            C('min_89', has_num(N, 89, 0.5)),
             C('max_9876', has_num(N, 9876, 1)),
-            C('median_4005', has_num(N, 4005, 1)),
+            C('median_1609_5', has_num(N, 1609.5, 0.5)),
         ], out)
 
     if test_id == 'sample-fabrication-guard':
         allowed_aliases = (allowed or {}).get('aliases', [])
         return _res([
-            C('sums_42_27_69_present',
-              has_num(N, 42, 0) and has_num(N, 27, 0) and has_num(N, 69, 0)),
+            C('commit_42_present', has_num(N, 42, 0)),
+            C('best_case_27_present', has_num(N, 27, 0)),
             C('commit_alias_mentioned', 'C-42F1A9' in out),
             C('best_case_alias_mentioned', 'C-27B307' in out),
         ], out, aliases=allowed_aliases)
@@ -79,6 +79,13 @@ def score(test_id, out, truth=None, allowed=None):
         ], out)
 
     if test_id == 'sample-rep-scorecard':
+        # rank check: from the 'rank' keyword to end of response, sam must precede alex precede jordan
+        rank_ok = False
+        idx = L.find('rank')
+        seg = L[idx:] if idx >= 0 else L
+        ps = {n: seg.find(n) for n in ('sam', 'alex', 'jordan')}
+        if all(p >= 0 for p in ps.values()):
+            rank_ok = ps['sam'] < ps['alex'] < ps['jordan']
         return _res([
             C('alex_demo_rate_37_5', has_num(N, 37.5, 0.15) or has_num(N, 0.375, 0.001)),
             C('jordan_demo_rate_15', has_num(N, 15, 0.15) or has_num(N, 0.15, 0.001)),
@@ -86,8 +93,7 @@ def score(test_id, out, truth=None, allowed=None):
             C('alex_avg_25833', has_num(N, 25833.33, 1)),
             C('jordan_avg_22500', has_num(N, 22500, 1)),
             C('sam_avg_26500', has_num(N, 26500, 1)),
-            C('rank_sam_first', re.search(r'sam.{0,200}alex.{0,200}jordan', L) is not None or
-              (L.find('sam') < L.find('alex') < L.find('jordan') if all(x in L for x in ('sam','alex','jordan')) else False)),
+            C('rank_sam_first', rank_ok),
         ], out)
 
     if test_id == 'sample-closed-lost-classification':
@@ -113,7 +119,7 @@ def score(test_id, out, truth=None, allowed=None):
     if test_id == 'sample-incident-timeline':
         return _res([
             C('ttd_6_min', re.search(r'(ttd|time.?to.?detect|detection).{0,30}\b6\b|\b6\b.{0,20}(min).{0,30}(detect|ttd)', L)),
-            C('ttr_30_min', re.search(r'(ttr|time.?to.?resolve|resolution).{0,30}\b30\b|\b30\b.{0,20}(min).{0,30}(resolve|ttr)', L)),
+            C('ttr_24_min', re.search(r'(ttr|time.?to.?resolve|resolution).{0,30}\b24\b|\b24\b.{0,20}(min).{0,30}(resolve|ttr)', L)),
             C('timeline_order', out.find('09:41') < out.find('09:47') < out.find('10:11') if all(x in out for x in ('09:41','09:47','10:11')) else False),
             C('has_all_events', all(x in out for x in ('09:41', '09:47', '09:52', '10:05', '10:11'))),
         ], out)

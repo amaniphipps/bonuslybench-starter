@@ -45,7 +45,7 @@
     "id": "sample-incident-timeline",
     "category": "ops-maintenance",
     "timeout": 180,
-    "prompt": "You are an SRE writing a postmortem. Use only the events below. Produce a chronological timeline (HH:MM format), then state total time-to-detect and time-to-resolve in minutes.\n\nEvents:\n- 09:41 Deploy of service v2.3.1 completed\n- 09:47 First elevated error-rate alert fires (6 minutes after deploy)\n- 09:52 On-call acknowledges page\n- 10:05 Rollback to v2.3.0 initiated\n- 10:11 Error rate returns to baseline; incident closed\n\nRespond with the timeline, TTD, and TTR only."
+    "prompt": "You are an SRE writing a postmortem. Use only the events below. Produce a chronological timeline (HH:MM format), then state time-to-detect (TTD = first alert minus deploy) and time-to-resolve (TTR = incident closed minus first alert) in minutes.\n\nEvents:\n- 09:41 Deploy of service v2.3.1 completed\n- 09:47 First elevated error-rate alert fires\n- 09:52 On-call acknowledges page\n- 10:05 Rollback to v2.3.0 initiated\n- 10:11 Error rate returns to baseline; incident closed\n\nRespond with the timeline, TTD, and TTR only."
   },
   {
     "id": "sample-churn-eligibility",
