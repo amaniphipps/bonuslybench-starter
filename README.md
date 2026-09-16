@@ -62,6 +62,16 @@ Full results, updated monthly: [bonuslybench.com](https://www.bonuslybench.com)
 5. **Your data, your tests, your keys.** This repo ships mock tests only. The value is
    the structure — you bring the questions your business actually needs answered.
 
+## The report refreshes monthly
+
+The live report at [bonuslybench.com](https://www.bonuslybench.com) re-runs on the 1st
+of every month: new OpenRouter chat models released since the last run get added, models
+still on the list that haven't been run in over two months get re-run, and the oldest
+models roll off once the list passes ~120. The "last run" date on the site is stamped
+at deploy time. (That pipeline — `monthly/registry.py` + `monthly/refresh.py` — runs
+against our private copy of the suite; the same incremental-refresh pattern is easy to
+adapt if you want it for your own fork.)
+
 ## What you get
 
 - **Parallel runner** (`bonuslybench/run_bench.py`) — N models x M tests, caching, retry with
