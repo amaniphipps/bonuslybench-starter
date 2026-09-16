@@ -56,8 +56,89 @@ def score(test_id, out, truth=None, allowed=None):
               has_num(N, 42, 0) and has_num(N, 27, 0) and has_num(N, 69, 0)),
             C('commit_alias_mentioned', 'C-42F1A9' in out),
             C('best_case_alias_mentioned', 'C-27B307' in out),
-            C('no_unallowed_deal_refs', True),  # placeholder replaced by fabrication check on aliases
         ], out, aliases=allowed_aliases)
+
+    if test_id == 'sample-weighted-forecast':
+        return _res([
+            C('commit_total_26700', has_num(N, 26700, 1)),
+            C('best_case_total_30000', has_num(N, 30000, 1)),
+            C('weighted_37200', has_num(N, 37200, 1)),
+            C('commit_count_3', has_num(N, 3, 0)),
+            C('best_case_count_2', has_num(N, 2, 0)),
+            C('excluded_count_2_and_amt_9000', has_num(N, 9000, 1)),
+            C('cites_commit_aliases', 'Deal-AAA111' in out and 'Deal-BBB222' in out and 'Deal-CCC333' in out),
+        ], out)
+
+    if test_id == 'sample-hygiene-audit':
+        return _res([
+            C('total_12', has_num(N, 12, 0)),
+            C('missing_stage_2', re.search(r'missing.{0,40}\b2\b|\b2\b.{0,40}missing|2 deals.{0,30}missing', L)),
+            C('regressions_2', re.search(r'regression.{0,40}\b2\b|\b2\b.{0,30}regression', L)),
+            C('names_a4_a9', 'Deal-A4' in out and 'Deal-A9' in out),
+            C('all_have_ds1', re.search(r'(all|every|12).{0,40}(ds1|discovery)|(yes|true).{0,30}ds1|no deal.{0,20}(missing|without).{0,10}ds1', L)),
+        ], out)
+
+    if test_id == 'sample-rep-scorecard':
+        return _res([
+            C('alex_demo_rate_37_5', has_num(N, 37.5, 0.15) or has_num(N, 0.375, 0.001)),
+            C('jordan_demo_rate_15', has_num(N, 15, 0.15) or has_num(N, 0.15, 0.001)),
+            C('sam_demo_rate_42_2', has_num(N, 42.2, 0.15) or has_num(N, 0.422, 0.001)),
+            C('alex_avg_25833', has_num(N, 25833.33, 1)),
+            C('jordan_avg_22500', has_num(N, 22500, 1)),
+            C('sam_avg_26500', has_num(N, 26500, 1)),
+            C('rank_sam_first', re.search(r'sam.{0,200}alex.{0,200}jordan', L) is not None or
+              (L.find('sam') < L.find('alex') < L.find('jordan') if all(x in L for x in ('sam','alex','jordan')) else False)),
+        ], out)
+
+    if test_id == 'sample-closed-lost-classification':
+        return _res([
+            C('k1_supported', re.search(r'k1.{0,120}support', L)),
+            C('k2_contradicted', re.search(r'k2.{0,120}contradict', L)),
+            C('k3_supported', re.search(r'k3.{0,120}support', L)),
+            C('k4_supported', re.search(r'k4.{0,120}support', L)),
+            C('contradicted_dollars_55000', has_num(N, 55000, 1) or has_num(N, 55, 0.1)),
+        ], out)
+
+    if test_id == 'sample-exec-compression':
+        bullets = [ln for ln in out.splitlines() if ln.strip().startswith(('-', '*', '•')) or re.match(r'^\s*\d+[.)]', ln)]
+        return _res([
+            C('exactly_3_bullets', len(bullets) == 3),
+            C('keeps_2_6m_pipeline', '2.6' in out),
+            C('keeps_28pct_winrate', '28' in out),
+            C('keeps_9_onboarded', re.search(r'\b9\b', out) is not None),
+            C('keeps_400k_deferred', '400' in out),
+            C('keeps_15pct_ticket_drop', '15' in out),
+        ], out)
+
+    if test_id == 'sample-incident-timeline':
+        return _res([
+            C('ttd_6_min', re.search(r'(ttd|time.?to.?detect|detection).{0,30}\b6\b|\b6\b.{0,20}(min).{0,30}(detect|ttd)', L)),
+            C('ttr_30_min', re.search(r'(ttr|time.?to.?resolve|resolution).{0,30}\b30\b|\b30\b.{0,20}(min).{0,30}(resolve|ttr)', L)),
+            C('timeline_order', out.find('09:41') < out.find('09:47') < out.find('10:11') if all(x in out for x in ('09:41','09:47','10:11')) else False),
+            C('has_all_events', all(x in out for x in ('09:41', '09:47', '09:52', '10:05', '10:11'))),
+        ], out)
+
+    if test_id == 'sample-churn-eligibility':
+        return _res([
+            C('acme_eligible', re.search(r'acme.{0,60}eligible', L)),
+            C('globex_ineligible_arr', re.search(r'globex.{0,80}(ineligible|not eligible)', L) and re.search(r'globex.{0,200}arr|arr.{0,200}globex', L)),
+            C('initech_ineligible_health', re.search(r'initech.{0,80}(ineligible|not eligible)', L) and re.search(r'initech.{0,200}health|health.{0,200}initech', L)),
+            C('umbrella_ineligible_sev1', re.search(r'umbrella.{0,80}(ineligible|not eligible)', L)),
+            C('hooli_eligible', re.search(r'hooli.{0,60}eligible', L)),
+            C('eligible_count_2', re.search(r'\b2\b.{0,40}(eligible|account)|(eligible|account).{0,40}\b2\b', L)),
+        ], out)
+
+    if test_id == 'sample-attribution-math':
+        return _res([
+            C('total_1000000', has_num(N, 1000000, 1) or has_num(N, 1, 0.01)),
+            C('paid_42pct', has_num(N, 42, 0.15) or has_num(N, 0.42, 0.001)),
+            C('organic_31pct', has_num(N, 31, 0.15) or has_num(N, 0.31, 0.001)),
+            C('events_18pct', has_num(N, 18, 0.15) or has_num(N, 0.18, 0.001)),
+            C('partners_9pct', has_num(N, 9, 0.15) or has_num(N, 0.09, 0.001)),
+            C('avg_paid_12000', has_num(N, 12000, 1)),
+            C('avg_events_15000', has_num(N, 15000, 1)),
+            C('ratio_4x', has_num(N, 4, 0.05)),
+        ], out)
 
     # Fallback: a scorer branch must exist per test id. Never default-pass.
     raise ValueError(f'No scorer registered for test id: {test_id}')

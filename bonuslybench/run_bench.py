@@ -96,11 +96,15 @@ def main():
     ap = argparse.ArgumentParser(description='BonuslyBench runner')
     ap.add_argument('models_file', help='JSON list of {"id": "...", "tier": "..."} model entries')
     ap.add_argument('--tests', default='tests/tests.json')
-    ap.add_argument('--provider', default='openrouter-direct', choices=list(PROVIDERS))
+    ap.add_argument('--provider', default='openrouter-direct',
+                    help=f"built-ins: {', '.join(PROVIDERS)} — or extend PROVIDERS and pass your own")
     ap.add_argument('--run-dir', default=None, help='defaults to run_<YYYY-MM-DD>')
     ap.add_argument('--workers', type=int, default=8)
     ap.add_argument('--only-test', default=None)
     args = ap.parse_args()
+    if args.provider not in PROVIDERS:
+        ap.error(f"unknown provider '{args.provider}'. Built-ins: {', '.join(PROVIDERS)}. "
+                 "To add your own, extend PROVIDERS in run_bench.py.")
 
     run_dir = args.run_dir or f'run_{time.strftime("%Y-%m-%d")}'
     tests = json.load(open(args.tests))
