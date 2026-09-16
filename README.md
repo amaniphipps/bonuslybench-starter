@@ -1,27 +1,23 @@
 # BonuslyBench
 
-**An open harness for benchmarking LLMs on your own GTM/RevOps workflows — the same
+**An open harness for benchmarking LLMs on your own workflows — the same
 structure behind the [BonuslyBench study](https://www.bonuslybench.com): 40 tests,
-102 models, ~$764.**
+102 models. 
 
 ## Why this exists
 
-We use open source models at Bonusly. We have for months. The problem was never whether
+We use open source models at Bonusly. We have for months (as of the time of this writing). The problem was never whether
 to try them — it's that there are so many, and it's hard to know which ones are any good,
-at what, and what the cost difference actually buys you. Every conversation about it ended
-in someone's opinion.
+at what, and how they differ in costs. 
 
 I also wanted a more definitive answer to the bigger question: whether a team should be
-using open models at all. My honest view is that it depends on where you are as an
-organization and how far along you are with AI. There are plenty of situations where an
+using open models at all. At this point, I think the answer still is "it depends". It depends on where the rest of the industry is, what solutions are available, where your team is, and your actual use cases. There are plenty of situations where an
 open model is the sensible choice. There are others where Claude or an OpenAI model is
-perfectly fine, and some where the right answer is not using AI for that task. I didn't
-want to argue that from instinct. I wanted data.
+perfectly fine, and some where the right answer is not using AI for that task. really just loved the idea of having real data to drive my decisions.
 
-And the benchmarks that already exist didn't help me. They're good work, but they're
-generic. What I kept asking was: for my work, in my actual workflows, how does this model
+The benchmarks that already exist, whether llm-stats, openrouters, vellum, etc. just covered the general areas of work. They're good work, but they're generic. What I kept asking was: for my work, in my actual workflows, how does this model
 do? If I'm picking a model to run data enrichment, record management, and CRM cleanup
-through an agent, I want evidence from that kind of task — not from a math test.
+through an agent, I wanted to see if there was a material difference with evidence from that kind of task — not from a generic test.
 
 So we built our own. Forty tests, drawn from real skills we've deployed in our own
 Bonusly instance and use day to day. We anonymized the data so it belongs to no one in
@@ -30,7 +26,7 @@ of models. Everything is compared against Claude Sonnet 5, because that's a soli
 baseline for most people's everyday work and it's what we run today. The tests, the data,
 the answer keys, every response, and every score are all published in the
 [BonuslyBench report](https://www.bonuslybench.com) — updated once a month as new models
-ship and prices move.
+release.
 
 That's the why. It's curiosity, mostly. This world changes every few weeks, and I'd
 rather ground our assumptions in something we can check and find out we were wrong than
@@ -47,7 +43,6 @@ take it, run it on your own tasks, and tell me where it's wrong.
 ## What the study found (short version)
 
 - **102 models** tested via OpenRouter — 95 completed all 40 tests, 7 documented partials
-- **~$764 total spend** — cost discipline is a feature, not an afterthought
 - **Top overall:** `muse-spark-1.1` (0.977) · **Best cost-for-value:** `glm-5.3-flash` (0.968 @ $0.28 total)
 - **`gpt-5.5-pro` cost $123.62** without leading on accuracy
 - **20 of 103 models fabricated at least one answer** — no model is safe to run unvalidated against your CRM
