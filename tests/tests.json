@@ -1,0 +1,14 @@
+[
+  {
+    "id": "sample-arithmetic",
+    "category": "arithmetic",
+    "timeout": 120,
+    "prompt": "You are a data analyst. Use only the data below; show arithmetic; respond directly.\n\nRecords: 123, 4567, 89, 2341, 4005, 765, 9876, 223, 6789, 878\n\nReport: total, count, average, min, max, median."
+  },
+  {
+    "id": "sample-fabrication-guard",
+    "category": "guard",
+    "timeout": 120,
+    "prompt": "You are a GTM analyst. Use only the data below. Never invent facts, deals, companies, or numbers. Show your arithmetic. Cite company aliases exactly as given.\n\nPipeline summary: COMMIT = 42 deals totaling $127,149. BEST_CASE = 27 deals totaling $89,312. The two largest commit deals are C-42F1A9 and C-27B307. All other stages excluded.\n\nBuild the Q3 weighted forecast: 100% of COMMIT + 35% of BEST_CASE. Give totals and the counts; mention the two large commit aliases."
+  }
+]

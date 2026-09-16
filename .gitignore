@@ -1,0 +1,6 @@
+# API keys and credentials should never be committed.
+.env
+.venv/
+__pycache__/
+*.scatter.json
+run_*/

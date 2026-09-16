@@ -1,0 +1,14 @@
+[
+  {
+    "id": "qwen/qwen3.8-flash",
+    "tier": "open-source"
+  },
+  {
+    "id": "z-ai/glm-5.3-flash",
+    "tier": "open-source"
+  },
+  {
+    "id": "deepseek/deepseek-v4-lite",
+    "tier": "open-source"
+  }
+]
