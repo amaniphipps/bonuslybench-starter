@@ -1,51 +1,71 @@
-# BonuslyBench — an open harness for benchmarking LLMs on your own GTM/RevOps (or any) test set.
+# BonuslyBench
 
-Fork it, supply your own connectors + tests, plug in your keys, and run the same
-structure Amani used for the original BonuslyBench. Samples included; swap in your data.
+**An open harness for benchmarking LLMs on your own GTM/RevOps workflows — the same
+structure behind the [BonuslyBench study](https://www.bonuslybench.com): 40 tests,
+102 models, ~$764.**
 
 ## Why this exists
 
-In 2026 the LLM market crossed a threshold where "which model should RevOps actually buy?"
-stopped having an obvious answer. Frontier models cost 100–400x more per call than the
-best open-source options, yet nearly all public benchmarks (MMLU, GSM8K, HumanEval) test
-academic knowledge or competitive programming — not the thing a GTM team actually asks a
-model to do: read a messy CRM export, catch a stage regression, weight a forecast
-correctly, and *not invent a deal that doesn't exist*.
+We use open source models at Bonusly. We have for months. The problem was never whether
+to try them — it's that there are so many, and it's hard to know which ones are any good,
+at what, and what the cost difference actually buys you. Every conversation about it ended
+in someone's opinion.
 
-So the original **BonuslyBench** study (September 2026) was built to answer one question
-with real numbers: **on 40 deterministic GTM/RevOps tasks drawn from a real pipeline
-dataset, which models actually do the work, and what do they cost to do it?**
+I also wanted a more definitive answer to the bigger question: whether a team should be
+using open models at all. My honest view is that it depends on where you are as an
+organization and how far along you are with AI. There are plenty of situations where an
+open model is the sensible choice. There are others where Claude or an OpenAI model is
+perfectly fine, and some where the right answer is not using AI for that task. I didn't
+want to argue that from instinct. I wanted data.
 
-### What the initial study found
+And the benchmarks that already exist didn't help me. They're good work, but they're
+generic. What I kept asking was: for my work, in my actual workflows, how does this model
+do? If I'm picking a model to run data enrichment, record management, and CRM cleanup
+through an agent, I want evidence from that kind of task — not from a math test.
 
-- **102 models tested** via OpenRouter — 95 completed the full suite, 7 documented partials.
-- **~$764 total spend** to benchmark the entire field, proving cost-disciplined evaluation
-  is possible if you measure per-call token telemetry from the start.
-- **Top overall**: `muse-spark-1.1` at 0.977 mean pass rate.
-- **Best cost-for-value**: `glm-5.3-flash` at 0.968 for **$0.28 total** — a model that
-  would be invisible on capability-only leaderboards.
-- **Overpriced at the frontier**: `gpt-5.5-pro` cost $123.62 without leading on accuracy.
-- **Smaller open models reliably beat flagship models on deterministic GTM math**, and
-  every model was caught by the fabrication guard at least once — no model is safe to
-  run unvalidated against your CRM.
+So we built our own. Forty tests, drawn from real skills we've deployed in our own
+Bonusly instance and use day to day. We anonymized the data so it belongs to no one in
+particular, kept the mess that makes the work hard, and ran the tests across a wide range
+of models. Everything is compared against Claude Sonnet 5, because that's a solid
+baseline for most people's everyday work and it's what we run today. The tests, the data,
+the answer keys, every response, and every score are all published in the
+[BonuslyBench report](https://www.bonuslybench.com) — updated once a month as new models
+ship and prices move.
 
-Full writeup and live matrix: [bonuslybench.com](https://www.bonuslybench.com)
+That's the why. It's curiosity, mostly. This world changes every few weeks, and I'd
+rather ground our assumptions in something we can check and find out we were wrong than
+keep guessing and never know. We talk about this stuff constantly inside Bonusly, so
+putting it out in the open felt like the natural next step.
 
-### Design principles carried into this harness
+**What this repo is:** the harness we used, minus our data. The parallel runner, the
+deterministic scorers, the provider templates, and ten sample tests drawn from the same
+categories as the real suite. You bring the connectors, the tests, and the keys — then
+take it, run it on your own tasks, and tell me where it's wrong.
 
-1. **No LLM-as-judge.** Every check is a named, deterministic pass/fail assertion
-   (exact number present, alias cited, regex matched). If you can't score it
-   deterministically, the test isn't finished.
-2. **Fabrication is a first-class failure.** Every response is scanned for entity
-   aliases that don't exist in the source data. Invented deals = automatic flag.
-3. **Cost is a metric, not an afterthought.** Every call records tokens, latency,
-   tok/s, and dollars. Rankings without cost are only half the answer.
-4. **Partials are documented, not hidden.** If a model can't finish the suite, its
-   exact completion count is published. Endgame policy: one final retry, then the
-   straggler test is discarded and documented.
-5. **Your data, your tests, your keys.** This repo ships mock tests only. The value
-   is the structure — you bring the connectors and the questions your business
-   actually needs answered.
+— Amani Phipps, Senior Revenue Architect at Bonusly
+
+## What the study found (short version)
+
+- **102 models** tested via OpenRouter — 95 completed all 40 tests, 7 documented partials
+- **~$764 total spend** — cost discipline is a feature, not an afterthought
+- **Top overall:** `muse-spark-1.1` (0.977) · **Best cost-for-value:** `glm-5.3-flash` (0.968 @ $0.28 total)
+- **`gpt-5.5-pro` cost $123.62** without leading on accuracy
+- **20 of 103 models fabricated at least one answer** — no model is safe to run unvalidated against your CRM
+
+Full results, updated monthly: [bonuslybench.com](https://www.bonuslybench.com)
+
+## Design principles
+
+1. **No LLM-as-judge.** Every check is a named, deterministic pass/fail assertion. If you
+   can't score it deterministically, the test isn't finished.
+2. **Fabrication is a first-class failure.** Every response is scanned for entity aliases
+   that don't exist in the source data. Invented deals = automatic flag.
+3. **Cost is a metric, not an afterthought.** Every call records tokens, latency, tok/s,
+   and dollars. Rankings without cost are only half the answer.
+4. **Partials are documented, not hidden.** One final retry, then the straggler test is
+   discarded and documented at exact counts.
+5. **Your data, your tests, your keys.** This repo ships mock tests only. The value is
+   the structure — you bring the questions your business actually needs answered.
 
 ## What you get
 
