@@ -2,7 +2,7 @@
 
 **An open harness for benchmarking LLMs on your own workflows — the same
 structure behind the [BonuslyBench study](https://www.bonuslybench.com): 40 tests,
-102 models. 
+102 models.**
 
 ## Why this exists
 
@@ -13,7 +13,7 @@ at what, and how they differ in costs.
 I also wanted a more definitive answer to the bigger question: whether a team should be
 using open models at all. At this point, I think the answer still is "it depends". It depends on where the rest of the industry is, what solutions are available, where your team is, and your actual use cases. There are plenty of situations where an
 open model is the sensible choice. There are others where Claude or an OpenAI model is
-perfectly fine, and some where the right answer is not using AI for that task. really just loved the idea of having real data to drive my decisions.
+perfectly fine, and some where the right answer is not using AI for that task. I really just loved the idea of having real data to drive my decisions.
 
 The benchmarks that already exist, whether llm-stats, openrouters, vellum, etc. just covered the general areas of work. They're good work, but they're generic. What I kept asking was: for my work, in my actual workflows, how does this model
 do? If I'm picking a model to run data enrichment, record management, and CRM cleanup
