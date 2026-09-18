@@ -149,7 +149,7 @@ Add your own by extending `PROVIDERS` in `bonuslybench/run_bench.py`.
 
 Usage files capture tokens and cost (OpenRouter returns `usage.cost`).
 Latency and tok/s are joined per response. The original BonuslyBench processed
-102 models for ~$764 — cost discipline is a first-class feature here.
+102 models for ~$764.
 
 ## Sample results → publication
 
