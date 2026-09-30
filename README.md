@@ -1,7 +1,7 @@
-# BonuslyBench
+# RevenueBench
 
 **An open harness for benchmarking LLMs on your own workflows — the same
-structure behind the [BonuslyBench study](https://www.bonuslybench.com): 40 tests,
+structure behind the [RevenueBench study](https://www.therevenuebench.com): 40 tests,
 102 models.**
 
 ## Why this exists
