@@ -89,7 +89,7 @@ adapt if you want it for your own fork.)
 ## Quick start
 
 ```bash
-git clone <repo-url> && cd bonuslybench-starter
+git clone <repo-url> && cd revenuebench-starter
 cp .env.example .env          # add OPENROUTER_API_KEY
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
