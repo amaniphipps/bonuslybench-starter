@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""BonuslyBench runner — spawns N models x M tests in parallel with telemetry per call.
+"""The Revenue Bench runner — spawns N models x M tests in parallel with telemetry per call.
 
 Generalized from the original BonuslyBench harness. Provider-agnostic: any CLI
 that maps to one of the built-in PROVIDERS templates (or your own --cmd-template).
@@ -93,7 +93,7 @@ class Runner:
         return (model, tid, 'error:' + last_err[:80], lat)
 
 def main():
-    ap = argparse.ArgumentParser(description='BonuslyBench runner')
+    ap = argparse.ArgumentParser(description='The Revenue Bench runner')
     ap.add_argument('models_file', help='JSON list of {"id": "...", "tier": "..."} model entries')
     ap.add_argument('--tests', default='tests/tests.json')
     ap.add_argument('--provider', default='openrouter-direct',

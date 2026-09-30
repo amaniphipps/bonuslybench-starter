@@ -1,7 +1,7 @@
-# RevenueBench
+# The Revenue Bench
 
-**An open harness for benchmarking LLMs on your own workflows — the same
-structure behind the [RevenueBench study](https://www.therevenuebench.com): 40 tests,
+**An open-source benchmark for revenue teams — an open harness for benchmarking LLMs
+on your own workflows. Same structure behind the [Revenue Bench study](https://www.therevenuebench.com): 40 tests,
 102 models.**
 
 ## Why this exists
